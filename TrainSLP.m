@@ -1,5 +1,5 @@
 function [w, b] = TrainSLP(mini_batch_x, mini_batch_y)
-%Output: w ? R10×196 and b ? R10×1 are the trained weights and bias of a single-layer perceptron.
+%Output: w ? R10Ã—196 and b ? R10Ã—1 are the trained weights and bias of a single-layer perceptron.
 %Description: You will use the following functions to train a single-layer perceptron using
 %a stochastic gradient descent method: FC, FC_backward, Loss_cross_entropy_softmax.
 
@@ -18,7 +18,7 @@ k = 1; % initialize k=1
 nIters = 10000;
 for iter = 1:nIters
     iter
-    if iter == 1000*iter %6: at every 1000th iteration, ? ? ??
+    if mod(iter,1000) == 0 %6: at every 1000th iteration, ? ? ??
         gamma = lambda*gamma;
     end
     
