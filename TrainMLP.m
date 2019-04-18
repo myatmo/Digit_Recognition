@@ -1,5 +1,5 @@
 function [w1, b1, w2, b2] = TrainMLP(mini_batch_x, mini_batch_y)
-%Output: w1 ? R30×196, b1 ? R30×1, w2 ? R10×30, b2 ? R10×1 are the trained weights and biases of
+%Output: w1 ? R30Ã—196, b1 ? R30Ã—1, w2 ? R10Ã—30, b2 ? R10Ã—1 are the trained weights and biases of
 %a multi-layer perceptron.
 %Description: You will use the following functions to train a multi-layer perceptron using
 %a stochastic gradient descent method: FC, FC_backward, ReLu, ReLu_backward, Loss_cross_entropy_softmax.
@@ -22,7 +22,7 @@ k = 1; % initialize k=1
 nIters = 10000;
 for iter = 1:nIters
     iter
-    if iter == 1000*iter %6: at every 1000th iteration, ? ? ??
+    if mod(iter,1000) == 0 %6: at every 1000th iteration, ? ? ??
         gamma = lambda*gamma;
     end
     
