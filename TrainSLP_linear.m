@@ -1,6 +1,6 @@
 function [w, b] = TrainSLP_linear(mini_batch_x, mini_batch_y)
 %Input: mini_batch_x and mini_batch_y are cells where each cell is a batch of images and labels.
-%Output: w ? R10×196 and b ? R10×1 are the trained weights and bias of a single-layer perceptron.
+%Output: w ? R10Ã—196 and b ? R10Ã—1 are the trained weights and bias of a single-layer perceptron.
 %Description: You will use FC, FC_backward, and Loss_euclidean to train a singlelayer perceptron
 %using a stochastic gradient descent method where a pseudo-code can be found below. Through training, you are
 %expected to see reduction of loss as shown in Figure 2(b). As a result of training, the network should produce 
@@ -21,7 +21,7 @@ k = 1; % initialize k=1
 nIters = 10000;
 for iter = 1:nIters
     iter
-    if iter == 1000*iter %6: at every 1000th iteration, ? ? ??
+    if mod(iter,1000) == 0 %6: at every 1000th iteration, ? ? ??
         gamma = lambda*gamma;
     end
     
