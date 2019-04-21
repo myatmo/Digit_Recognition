@@ -1,33 +1,32 @@
-%function main_slp
+function main_slp
 
-%{
 load('mnist_train.mat');
 load('mnist_test.mat');
 
 % Data preprocessing
-batch_size = 30;
+batch_size = 70;
 im_train = im_train/255;
 im_test = im_test/255;
 [mini_batch_x, mini_batch_y] = GetMiniBatch(im_train, label_train, batch_size);
 
 % input->fc(30)->ReLu->fc(10)->softmax->cross_entropy
 % fc(30): 30 hidden units
-%}
-[w1, b1, w2, b2] = TrainMLP(mini_batch_x, mini_batch_y);
 
+%[w1, b1, w2, b2] = TrainMLP(mini_batch_x, mini_batch_y);
 
-%{
+load mlp.mat
 % Test
 acc = 0;
 confusion = zeros(10,10);
 for iTest = 1 : size(im_test,2)
-    x = [im_test(:,iTest);1];
+    x = im_test(:,iTest);
     
     pred1 = FC(x, w1, b1);
     pred2 = ReLu(pred1);
     pred3 = FC(pred2, w2, b2);
-    y = SoftMax(pred3);
-
+    pred3 = ReLu(pred3);
+    y = softmax(pred3);
+    
     [~,l] = max(y);
     confusion(label_test(iTest)+1, l) = confusion(label_test(iTest)+1, l) + 1;
     
@@ -53,6 +52,6 @@ set(axis_handle, 'YTick', 1:10)
 set(axis_handle, 'YTickLabel', categories)
 xlabel(sprintf('Accuracy: %f', accuracy));
 
-save mlp.mat w1, b1, w2, b2
-%}
+%save 'mlp.mat' w1 b1 w2 b2
+
 

@@ -1,6 +1,5 @@
-%function main_slp_linear
+function main_slp_linear
 
-%{
 load('mnist_train.mat');
 load('mnist_test.mat');
 
@@ -11,11 +10,9 @@ im_test = im_test/255;
 [mini_batch_x, mini_batch_y] = GetMiniBatch(im_train, label_train, batch_size);
 
 % input->fc(10)->euclidean
-[w, b] = TrainSLP_linear(mini_batch_x, mini_batch_y);
+%[w, b] = TrainSLP_linear(mini_batch_x, mini_batch_y);
 
-%}
-
-
+load slp_linear.mat
 % Test
 acc = 0;
 confusion = zeros(10,10);
@@ -49,5 +46,5 @@ set(axis_handle, 'YTick', 1:10)
 set(axis_handle, 'YTickLabel', categories)
 xlabel(sprintf('Accuracy: %f', accuracy));
 
-save 'slp_linear.mat' w b
+%save 'slp_linear.mat' w b
 

@@ -18,21 +18,6 @@ for i = 1:n
 end
 
 dLdy = (y_hat - y)';
-dLdy
-L
-%{
-% calculate dL/dy (dx in this case; x is the prediction)
-for i = 1:n
-    for j = 1:n
-        if i==j
-            dy_hatdx(i,j) = y_hat(i) * (1-y_hat(i));
-        else
-            dy_hatdx(i,j) = -y_hat(i) * y_hat(j);
-        end
-    end
-end
-%}
-%dLdy = [dLdy ((y(i)/y_hat(i)) * dy_hatdx)];
 
 
 

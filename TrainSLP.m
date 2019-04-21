@@ -1,5 +1,5 @@
 function [w, b] = TrainSLP(mini_batch_x, mini_batch_y)
-%Output: w ? R10Ã—196 and b ? R10Ã—1 are the trained weights and bias of a single-layer perceptron.
+%Output: w ? R10×196 and b ? R10×1 are the trained weights and bias of a single-layer perceptron.
 %Description: You will use the following functions to train a single-layer perceptron using
 %a stochastic gradient descent method: FC, FC_backward, Loss_cross_entropy_softmax.
 
@@ -11,8 +11,8 @@ gamma = 0.01;
 lambda = 0.6;
 
 % Initialize the weights with a Gaussian noise w ? N (0, 1) and bias
-w = normrnd(0,1,[n,m]);
-b = normrnd(0,1,[n,1]);
+w = rand([n,m])*sqrt(2/(n+m));
+b = rand([n,1])*sqrt(2/(n));
 
 k = 1; % initialize k=1
 nIters = 10000;
@@ -31,13 +31,11 @@ for iter = 1:nIters
     for i = 1:batch_size
         x = mini_batch_x{k}(:,i); % each image in kth mini_batch
         y_tilde = FC(x, w, b); % label prediction of xi
-        k
-        i
         
         y = mini_batch_y{k}(:,i); % ground truth label
         [l, dldy] = Loss_cross_entropy_softmax(y_tilde, y); % compute cross entropy loss l
         
-        [dldx dldw dldb] = FC_backward(dldy, x, w, b, y); % back-propagation of xi, dl/dw using back-propagation
+        [dldx, dldw, dldb] = FC_backward(dldy, x, w, b, y_tilde); % back-propagation of xi, dl/dw using back-propagation
         
         % Update dLdw and dLdb
         dLdw = dLdw + dldw;
@@ -51,9 +49,8 @@ for iter = 1:nIters
     end
     
     % Update the weights and bias
-    w = w - ((gamma/batch_size) * reshape(dLdw,[size(dLdw,2),size(dLdw,3)])); 
-    b = b - ((gamma/batch_size) * reshape(dLdb,[size(dLdb,2),size(dLdb,3)]));
-    b
+    w = w - ((gamma/batch_size) * reshape(dLdw,[size(dLdw,2),size(dLdw,3)]));
+    b = b - ((gamma/batch_size) * dLdb');
 end
 
 

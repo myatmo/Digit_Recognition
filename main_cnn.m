@@ -1,4 +1,4 @@
-function main_slp
+function main_cnn
 
 load('mnist_train.mat');
 load('mnist_test.mat');
@@ -10,18 +10,22 @@ im_test = im_test/255;
 [mini_batch_x, mini_batch_y] = GetMiniBatch(im_train, label_train, batch_size);
 
 
-% input->fc(10)->softmax->cross_entropy
-%[w, b] = TrainSLP(mini_batch_x, mini_batch_y);
+% input->conv->relu->pool->flat->fc(10)->softmax->cross_entropy
+% conv filter: 3x3x1x3
+%[w_conv, b_conv, w_fc, b_fc] = TrainCNN(mini_batch_x, mini_batch_y);
 
-load slp.mat
+load cnn.mat
 % Test
 acc = 0;
 confusion = zeros(10,10);
 for iTest = 1 : size(im_test,2)
-    x = im_test(:,iTest);
-    
-    pred1 = FC(x, w, b);
-    y = softmax(pred1);
+    x = reshape(im_test(:,iTest), [14, 14, 1]);
+    pred1 = Conv(x, w_conv, b_conv); 
+    pred2 = ReLu(pred1);
+    pred3 = Pool2x2(pred2);
+    pred4 = Flattening(pred3);
+    pred5 = FC(pred4, w_fc, b_fc);
+    y = softmax(pred5);
     
     [~,l] = max(y);
     confusion(label_test(iTest)+1, l) = confusion(label_test(iTest)+1, l) + 1;
@@ -48,7 +52,6 @@ set(axis_handle, 'YTick', 1:10)
 set(axis_handle, 'YTickLabel', categories)
 xlabel(sprintf('Accuracy: %f', accuracy));
 
-%save 'slp.mat' w b
-
+%save 'cnn.mat' w_conv b_conv w_fc b_fc
 
 

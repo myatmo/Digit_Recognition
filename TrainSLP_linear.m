@@ -1,6 +1,6 @@
 function [w, b] = TrainSLP_linear(mini_batch_x, mini_batch_y)
 %Input: mini_batch_x and mini_batch_y are cells where each cell is a batch of images and labels.
-%Output: w ? R10Ã—196 and b ? R10Ã—1 are the trained weights and bias of a single-layer perceptron.
+%Output: w ? R10×196 and b ? R10×1 are the trained weights and bias of a single-layer perceptron.
 %Description: You will use FC, FC_backward, and Loss_euclidean to train a singlelayer perceptron
 %using a stochastic gradient descent method where a pseudo-code can be found below. Through training, you are
 %expected to see reduction of loss as shown in Figure 2(b). As a result of training, the network should produce 
@@ -34,13 +34,11 @@ for iter = 1:nIters
     for i = 1:batch_size
         x = mini_batch_x{k}(:,i); % each image in kth mini_batch
         y_tilde = FC(x, w, b); % label prediction of xi
-        k
-        i
         
         y = mini_batch_y{k}(:,i); % ground truth label
         [l, dldy] = Loss_euclidean(y_tilde, y); % compute loss l
         
-        [dldx dldw dldb] = FC_backward(dldy, x, w, b, y); % back-propagation of xi, dl/dw using back-propagation
+        [dldx, dldw, dldb] = FC_backward(dldy, x, w, b, y_tilde); % back-propagation of xi, dl/dw using back-propagation
         
         % Update dLdw and dLdb
         dLdw = dLdw + dldw;
@@ -55,8 +53,7 @@ for iter = 1:nIters
     
     % Update the weights and bias
     w = w - ((gamma/batch_size) * reshape(dLdw,[size(dLdw,2),size(dLdw,3)])); 
-    b = b - ((gamma/batch_size) * reshape(dLdb,[size(dLdb,2),size(dLdb,3)]));
-    b
+    b = b - ((gamma/batch_size) * dLdb');
 end
 
 
